@@ -1,0 +1,1 @@
+initDataTables("table-list-diagnois", "list_diagnosis");
