@@ -29,24 +29,11 @@ CREATE TABLE IF NOT EXISTS `diagnosis_group` (
 -- Data exporting was unselected.
 
 
--- Dumping structure for table expert_system.display_questions
-CREATE TABLE IF NOT EXISTS `display_questions` (
+-- Dumping structure for table expert_system.display_symptoms
+CREATE TABLE IF NOT EXISTS `display_symptoms` (
   `id` int(11) NOT NULL,
   `level` int(11) DEFAULT NULL,
-  `questions_group` varchar(255) DEFAULT NULL,
-  `date_created` datetime DEFAULT NULL,
-  `date_modified` datetime DEFAULT NULL,
-  KEY `Index 1` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table expert_system.questions
-CREATE TABLE IF NOT EXISTS `questions` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `level` int(11) DEFAULT NULL,
-  `name` varchar(255) DEFAULT NULL,
+  `symptoms_group` varchar(255) DEFAULT NULL,
   `date_created` datetime DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
   KEY `Index 1` (`id`)
@@ -63,6 +50,19 @@ CREATE TABLE IF NOT EXISTS `suggestions` (
   KEY `Index 1` (`id`),
   KEY `FK__diagnosis_group` (`fk_diagnosis_group`),
   CONSTRAINT `FK__diagnosis_group` FOREIGN KEY (`fk_diagnosis_group`) REFERENCES `diagnosis_group` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+
+-- Dumping structure for table expert_system.symptoms
+CREATE TABLE IF NOT EXISTS `symptoms` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `level` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `date_created` datetime DEFAULT NULL,
+  `date_modified` datetime DEFAULT NULL,
+  KEY `Index 1` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.

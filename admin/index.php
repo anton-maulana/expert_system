@@ -33,8 +33,8 @@
                     <li class="nav-item <?php echo $active_page == "home" ? 'active' : '' ?>">
                         <a class="nav-link" href="?">Home <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item <?php echo $active_page == "list_diagnosis" ? 'active' : '' ?>">
-                        <a class="nav-link" href="?page=list_diagnosis"> List Diagnosis </a>
+                    <li class="nav-item <?php echo $active_page == "list_symptoms" ? 'active' : '' ?>">
+                        <a class="nav-link" href="?page=list_symptoms"> List gejala </a>
                     </li>
                     <!-- <li class="nav-item dropdown">
                         <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">  Dropdown  </a>
