@@ -9,10 +9,14 @@
         <link href="../assets/css/bootstrap-reboot.min.css" rel="stylesheet" type="text/css">
         <link href="../assets/css/select2.min.css" rel="stylesheet" />
         <link href="../assets/css/datatables.min.css" rel="stylesheet" />
+        <link href="../assets/css/jquery.toast.min.css" rel="stylesheet" />
+        <link href="../assets/css/custom.css" rel="stylesheet" />
+        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 
         <script src="../assets/js/jquery-3.3.1.min.js"></script>
         <script src="../assets/js/bootstrap.min.js"></script>
         <script src="../assets/js/select2.min.js"></script>
+        <script src="../assets/js/jquery.toast.min.js"></script>
         <script src="./scripts/utils.js"></script>        
     </head>
     <body>
@@ -24,28 +28,15 @@
             $active_page = isset($page) ? $page : "home";   
         ?>
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-            <a class="navbar-brand" href="#"> <img class="logo" src="http://bootstrap-ecommerce.com/main/images/logo-white.png" height="40"> LOGO</a>
+            <a class="navbar-brand" href="../"> <img class="logo" src="http://bootstrap-ecommerce.com/main/images/logo-white.png" height="40"> Expert System</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbar1">
                 <ul class="navbar-nav ml-auto"> 
                     <li class="nav-item <?php echo $active_page == "home" ? 'active' : '' ?>">
-                        <a class="nav-link" href="?">Home <span class="sr-only">(current)</span></a>
+                        <a class="nav-link" href="?">Dashboard <span class="sr-only">(current)</span></a>
                     </li>
-                    <li class="nav-item <?php echo $active_page == "list_symptoms" ? 'active' : '' ?>">
-                        <a class="nav-link" href="?page=list_symptoms"> List gejala </a>
-                    </li>
-                    <!-- <li class="nav-item dropdown">
-                        <a class="nav-link  dropdown-toggle" href="#" data-toggle="dropdown">  Dropdown  </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#"> Menu item 1</a></li>
-                            <li><a class="dropdown-item" href="#"> Menu item 2 </a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item">
-                        <a class="btn ml-2 btn-warning" href="http://bootstrap-ecommerce.com">Download</a>
-                    </li> -->
                 </ul>
             </div>
         </nav>

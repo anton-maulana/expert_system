@@ -1,5 +1,13 @@
 <?php
 include '../config/config.php';
+function execute_query($query){
+    global $connect;
+    if ($connect->query ( $query ) === TRUE) {
+        echo json_encode(array("response" => "success"));
+    } else {
+        echo json_encode(array("response" => "failed", "error" => $connect->error));                                                    
+    }   
+}
 
 $type = isset($_GET["type"]) ? $_GET["type"] : null;
 
@@ -31,6 +39,27 @@ switch($type){
             "recordsTotal" => $total_row
         );
         echo json_encode($data_tables_results);
+        break;
+    case "add_symptoms":
+        $level = $_POST["level"];
+        $name = $_POST["name"];
+        $date_created = date("Y-m-d H:i:s");
+        $date_modified = date("Y-m-d H:i:s");
+        $query = "INSERT INTO symptoms (name, level, date_created, date_modified) VALUES ('$name', '$level', '$date_created', '$date_modified')";
+        execute_query($query);    
+        break;
+    case "edit_symptoms":
+        $id = $_POST["id"];
+        $level = $_POST["level"];
+        $name = $_POST["name"];
+        $date_modified = date("Y-m-d H:i:s");
+        $query = "UPDATE symptoms SET  name = '$name', level = '$level', date_modified = '$date_modified' WHERE id = $id";
+        execute_query($query);     
+        break;
+    case "delete_symptoms":
+        $id = $_POST["id"];
+        $query = "DELETE FROM symptoms WHERE id = $id";
+        execute_query($query);
         break;
 }
 

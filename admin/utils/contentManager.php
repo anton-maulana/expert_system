@@ -6,7 +6,7 @@
             include("./pages/listSymptoms.php");
             break;
         default:
-            include("./pages/home.php");
+            include("./pages/listSymptoms.php");
             break;
     }
     
