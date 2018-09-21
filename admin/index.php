@@ -37,6 +37,9 @@
                     <li class="nav-item <?php echo $active_page == "home" ? 'active' : '' ?>">
                         <a class="nav-link" href="?">Dashboard <span class="sr-only">(current)</span></a>
                     </li>
+                    <li class="nav-item <?php echo $active_page == "diagnosis" ? 'active' : '' ?>">
+                        <a class="nav-link" href="?page=diagnosis"> Diagnosis </a>
+                    </li>
                 </ul>
             </div>
         </nav>

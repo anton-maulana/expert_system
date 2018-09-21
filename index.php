@@ -23,6 +23,7 @@
             $page = isset($_GET['page']) && $_GET['page']? $_GET['page'] : null;
             $active_page = isset($page) ? $page : "home";   
         ?>
+
         <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
             <a class="navbar-brand" href="?"> <img class="logo" src="http://bootstrap-ecommerce.com/main/images/logo-white.png" height="40"> Expert System</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar1" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
