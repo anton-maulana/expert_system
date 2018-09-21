@@ -15,6 +15,20 @@ CREATE DATABASE IF NOT EXISTS `expert_system` /*!40100 DEFAULT CHARACTER SET lat
 USE `expert_system`;
 
 
+-- Dumping structure for table expert_system.diagnosis
+CREATE TABLE IF NOT EXISTS `diagnosis` (
+  `id` int(11) NOT NULL,
+  `fk_diagnosis_group` int(11) DEFAULT NULL,
+  `name` varchar(255) DEFAULT NULL,
+  `descriptions` text DEFAULT NULL,
+  KEY `Index 1` (`id`),
+  KEY `FK__diagnosis_group` (`fk_diagnosis_group`),
+  CONSTRAINT `FK__diagnosis_group` FOREIGN KEY (`fk_diagnosis_group`) REFERENCES `diagnosis_group` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+-- Data exporting was unselected.
+
+
 -- Dumping structure for table expert_system.diagnosis_group
 CREATE TABLE IF NOT EXISTS `diagnosis_group` (
   `id` int(11) NOT NULL,
@@ -37,19 +51,6 @@ CREATE TABLE IF NOT EXISTS `display_symptoms` (
   `date_created` datetime DEFAULT NULL,
   `date_modified` datetime DEFAULT NULL,
   KEY `Index 1` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
--- Data exporting was unselected.
-
-
--- Dumping structure for table expert_system.suggestions
-CREATE TABLE IF NOT EXISTS `suggestions` (
-  `id` int(11) NOT NULL,
-  `fk_diagnosis_group` int(11) DEFAULT NULL,
-  `desc` text DEFAULT NULL,
-  KEY `Index 1` (`id`),
-  KEY `FK__diagnosis_group` (`fk_diagnosis_group`),
-  CONSTRAINT `FK__diagnosis_group` FOREIGN KEY (`fk_diagnosis_group`) REFERENCES `diagnosis_group` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 -- Data exporting was unselected.
