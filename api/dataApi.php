@@ -1,9 +1,9 @@
 <?php
 include '../config/config.php';
 
-function execute_query($query){
+function returnStatus($isStatus){
     global $connect;
-    if ($connect->query ( $query ) === TRUE) {
+    if ($isStatus) {
         echo json_encode(array("response" => "success"));
     } else {
         echo json_encode(array("response" => "failed", "error" => $connect->error));                                                    
@@ -50,21 +50,30 @@ switch($type){
         $name = $_POST["name"];
         $date_created = date("Y-m-d H:i:s");
         $date_modified = date("Y-m-d H:i:s");
-        $query = "INSERT INTO symptoms (name, level, date_created, date_modified) VALUES ('$name', '$level', '$date_created', '$date_modified')";
-        execute_query($query);    
+        $query = "INSERT INTO symptoms (name, level, date_created, date_modified) VALUES (?, ?, ?, ?)";
+        $params = array($name, $level, $date_created, $date_modified);
+        
+        $status = onlyExecute($query, "ssss",  $params);
+        returnStatus($status);
         break;
     case "edit_symptoms":
         $id = $_POST["id"];
         $level = $_POST["level"];
         $name = $_POST["name"];
         $date_modified = date("Y-m-d H:i:s");
-        $query = "UPDATE symptoms SET  name = '$name', level = '$level', date_modified = '$date_modified' WHERE id = $id";
-        execute_query($query);     
+        $query = "UPDATE symptoms SET  name = ?, level = ?, date_modified = ? WHERE id = ?";
+        $params = array($name, $level, $date_modified, $id);
+
+        $status = onlyExecute($query, "sssd",  $params);
+        returnStatus($status);     
         break;
     case "delete_symptoms":
         $id = $_POST["id"];
-        $query = "DELETE FROM symptoms WHERE id = $id";
-        execute_query($query);
+        $query = "DELETE FROM symptoms WHERE id = ?";
+        $params = array($id);
+
+        $status = onlyExecute($query, "d",  $params);
+        returnStatus($status);    
         break;
     case "diagnosis":
         $query = "SELECT count(*) as total FROM diagnosis WHERE name LIKE '$keyword%' ORDER BY $order_name $order_type LIMIT $limit_per_page OFFSET $offset";  
