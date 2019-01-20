@@ -1,14 +1,5 @@
 <?php
-include '../config/config.php';
-
-function returnStatus($isStatus){
-    global $connect;
-    if ($isStatus) {
-        echo json_encode(array("response" => "success"));
-    } else {
-        echo json_encode(array("response" => "failed", "error" => $connect->error));                                                    
-    }   
-}
+require_once '../config/config.php';
 
 function create_data_tables_response($rows, $draw, $total_row){
     return array(
@@ -19,30 +10,30 @@ function create_data_tables_response($rows, $draw, $total_row){
     );
 }
 
-$type = isset($_GET["type"]) ? $_GET["type"] : null;
+$type = $_GET["type"] ?? null;
 if($type == "list_symptoms" || $type == "diagnosis"){
     $columns = array("id", "name", "level");
-    $keyword = $_GET["search"]["value"];    
+    $keyword = "%{$_GET['search']['value']}%";    
     $limit_per_page = $_GET["length"];
     $offset = $_GET["start"];
     $order_name = $columns[$_GET['order'][0]['column']];
-    $order_type = $_GET['order'][0]['dir'];
+    $order_type = $_GET['order'][0]['dir'] == "asc" ? "asc" : "desc";
 }
 
 switch($type){
     case "list_symptoms":  
-        $query = "SELECT count(*) as total FROM symptoms WHERE name LIKE '$keyword%' ORDER BY $order_name $order_type LIMIT $limit_per_page OFFSET $offset";  
-        $conn= $connect->query($query);
-        $total_row = mysqli_fetch_array($conn)["total"];
-        
-        $query = "SELECT id, name, level FROM symptoms WHERE name LIKE '$keyword%' ORDER BY $order_name $order_type LIMIT $limit_per_page OFFSET $offset";
-        $conn = $connect->query($query);
-        $rows = array();
+        //mengambil total rows untuk
+        $query = "SELECT count(*) as total FROM symptoms WHERE name LIKE ? ORDER BY ? {$order_type} LIMIT ? OFFSET ?"; 
+        $params = array($keyword, $order_name, $limit_per_page, $offset);
+        $row = select($query, "ssdd", $params, true);
 
-        while ($row = mysqli_fetch_assoc($conn)) {
-            array_push($rows, $row);
-        }
-       
+        $query = "SELECT id, name, level FROM symptoms WHERE name LIKE ? ORDER BY ? {$order_type} LIMIT ? OFFSET ?";
+        $rows = select($query, "ssdd", $params);
+        
+        if(!$row || !$rows && count($rows) != 0)
+            return;
+                
+        $total_row = $row["total"];
         echo json_encode(create_data_tables_response($rows, $_GET["draw"], $total_row));
         break;
     case "add_symptoms":
@@ -53,9 +44,10 @@ switch($type){
         $query = "INSERT INTO symptoms (name, level, date_created, date_modified) VALUES (?, ?, ?, ?)";
         $params = array($name, $level, $date_created, $date_modified);
         
-        $status = onlyExecute($query, "ssss",  $params);
-        returnStatus($status);
+        $response = insert($query, "sdss", $params);
+        echo json_encode($response);
         break;
+
     case "edit_symptoms":
         $id = $_POST["id"];
         $level = $_POST["level"];
@@ -64,36 +56,30 @@ switch($type){
         $query = "UPDATE symptoms SET  name = ?, level = ?, date_modified = ? WHERE id = ?";
         $params = array($name, $level, $date_modified, $id);
 
-        $status = onlyExecute($query, "sssd",  $params);
-        returnStatus($status);     
+        $response = update($query, "sdsd",  $params);
+        echo json_encode($response);   
         break;
+
     case "delete_symptoms":
         $id = $_POST["id"];
-        $query = "DELETE FROM symptoms WHERE id = ?";
-        $params = array($id);
 
-        $status = onlyExecute($query, "d",  $params);
-        returnStatus($status);    
+        $response = delete("symptoms", $id);
+        echo json_encode($response);    
         break;
+
     case "diagnosis":
-        $query = "SELECT count(*) as total FROM diagnosis WHERE name LIKE '$keyword%' ORDER BY $order_name $order_type LIMIT $limit_per_page OFFSET $offset";  
-        $conn= $connect->query($query);
-        $total_row = mysqli_fetch_array($conn)["total"];
+        $query = "SELECT count(*) as total FROM diagnosis WHERE name LIKE ? ORDER BY ? {$order_type} LIMIT ? OFFSET ?";  
+        $params = array($keyword, $order_name, $limit_per_page, $offset);
+        $row = select($query, "ssdd", $params, true);
         
-        $query = "SELECT id, name FROM diagnosis WHERE name LIKE '$keyword%' ORDER BY $order_name $order_type LIMIT $limit_per_page OFFSET $offset";
-        $conn = $connect->query($query);
-        $rows = array();
-
-        while ($row = mysqli_fetch_assoc($conn)) {
-            array_push($rows, $row);
-        }
-    
+        $query = "SELECT * FROM diagnosis WHERE name LIKE ? ORDER BY ? {$order_type} LIMIT ? OFFSET ?";
+        $rows = select($query, "ssdd", $params);
+        
+        if(!$row || !$rows && count($rows) != 0)
+            return;
+                
+        $total_row = $row["total"];
         echo json_encode(create_data_tables_response($rows, $_GET["draw"], $total_row));
-        break;
         
 }
-
-
-
-
 ?>

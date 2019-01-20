@@ -1,20 +1,25 @@
 var listSymptomsSchema = [
     { "data": "id", "name": "id", "title": "Id" },
     { "data": "name", "name": "gejala", "title": "Gejala"},
+    { "data": "probability", "name": "probability", "title": "Probabilitas"},
     { "data": "","title": "action"},
 ];
-var customDom = "<'row'<'col-sm-6 col-md-2 insert-diagnosa'><'col-sm-6 col-md-4'l><'col-sm-12 col-md-6'f>>" +
+var customDom = "<'row'<'col-sm-4 col-md-2 insert-diagnosa'><'col-sm-4 col-md-2 calculate'>"+
+                "<'col-sm-4 col-md-2'l><'col-sm-12 col-md-6'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>";
 var columnDefs = [ {
         "targets": 2,
         "data": null,
-        "defaultContent": "<button type='button' style='background: transparent' class='btn btn-default btn-sm' onclick='editSymptoms(this)'><i class='fa fa-edit'></i></button>"+
-                        "<button type='button' style='background: transparent' class='btn btn-default btn-sm' onclick='removeSymptoms(this)'><i class='fas fa-trash-alt'></i></button>"
+        "defaultContent": 
+            "<button type='button' title='lihat solusi' style='background: transparent' class='btn btn-default btn-sm' onclick='viewSolutions(this)'><i class='fa fa-eye'></i></button>"+
+            "<button type='button' title='edit diagnosa' style='background: transparent' class='btn btn-default btn-sm' onclick='editSymptoms(this)'><i class='fa fa-edit'></i></button>"+
+            "<button type='button' title='hapus diagnosa' style='background: transparent' class='btn btn-default btn-sm' onclick='removeSymptoms(this)'><i class='fas fa-trash-alt'></i></button>"
     } ];
 
 var table = initDataTables("table-list-diagnosis", "diagnosis", listSymptomsSchema, customDom, columnDefs);
 $(".insert-diagnosa").append("<a href='?page=insert_diagnosis' class='btn btn-primary btn-sm'>Tambah Diagnosa</a>");
+$(".calculate").append("<a href='?page=insert_diagnosis' class='btn btn-primary btn-sm'>Kalkulasi</a>");
 // window['table'] = table;
 // $("#form-add-symptoms").submit(function(e) {
 //     var form = $(this);

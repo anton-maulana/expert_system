@@ -20,7 +20,7 @@
                     </div>
                     <div class="form-group">
                         <label for="level">Level</label>
-                        <input name="level" type="number" class="form-control" id="level" placeholder="contoh: 1">
+                        <input name="level" type="number" class="form-control" id="level" value="1">
                     </div>
                 </form>
             </div>

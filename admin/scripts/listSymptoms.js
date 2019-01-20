@@ -16,18 +16,17 @@ var columnDefs = [ {
 
 var table = initDataTables("table-list-symptoms", "list_symptoms", listSymptomsSchema, customDom, columnDefs);
 $(".add-symptoms").append("<button type='modal' class='btn btn-primary btn-sm' data-toggle='modal' data-target='#add-symptoms'>Tambah Gejala</button>");
-window['table'] = table;
 $("#form-add-symptoms").submit(function(e) {
     var form = $(this);
     var url = form.attr('action');
-    var me = this;
 
     $("#add-symptoms")["modal"]("hide");
     $.ajax({
            type: "POST",
            url: url,
            data: form.serialize(), // serializes the form's elements.
-           success: function(data){ showToaster(JSON.parse(data), 'Gejala berhasil ditambahkan.') }
+           success: function(data){ 
+               showToaster(JSON.parse(data), 'Gejala berhasil ditambahkan.') }
          });
 
     e.preventDefault(); // avoid to execute the actual submit of the form.
@@ -37,7 +36,6 @@ $("#form-add-symptoms").submit(function(e) {
 $("#form-edit-symptoms").submit(function(e) {
     var form = $(this);
     var url = form.attr('action');
-    var me = this;
 
     $("#modal-edit-symptoms")["modal"]("hide");
     $.ajax({
@@ -53,7 +51,6 @@ $("#form-edit-symptoms").submit(function(e) {
 $("#form-remove-symptoms").submit(function(e) {
     var form = $(this);
     var url = form.attr('action');
-    var me = this;
 
     $("#modal-remove-symptoms")["modal"]("hide");
     $.ajax({
@@ -65,26 +62,6 @@ $("#form-remove-symptoms").submit(function(e) {
 
     e.preventDefault(); // avoid to execute the actual submit of the form.
 });
-
-function showToaster(data, successMessages){
-    if(data["response"] == "success"){
-        $.toast({
-            heading: 'Success',
-            text: successMessages,
-            showHideTransition: 'slide',
-            icon: 'success'
-        });
-        table.ajax.reload();
-    }
-    else {
-        $.toast({
-            heading: 'Error',
-            text: 'Terjadi Kesalahan '+data["error"],
-            showHideTransition: 'slide',
-            icon: 'error'
-        });
-    }
-}
 
 function editSymptoms(elements){
     var row = $(elements).closest("tr");

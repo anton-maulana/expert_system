@@ -8,7 +8,27 @@ function initDataTables(element, type, schema, customDom = null, columnDefs = nu
     if(customDom)
         configDataTables["dom"] = customDom;
     if(columnDefs)
-        configDataTables["columnDefs"] = columnDefs;
+        configDataTables["columnDefs"] = columnDefs; 
 
     return $('#'+element).DataTable(configDataTables);
+}
+
+function showToaster(data, successMessages){
+    if(data["status"] == "success"){
+        $.toast({
+            heading: 'Success',
+            text: successMessages,
+            showHideTransition: 'slide',
+            icon: 'success'
+        });
+        table.ajax.reload();
+    }
+    else {
+        $.toast({
+            heading: 'Error',
+            text: 'Terjadi Kesalahan \n'+ data["error"],
+            showHideTransition: 'slide',
+            icon: 'error'
+        });
+    }
 }

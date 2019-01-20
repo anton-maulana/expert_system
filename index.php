@@ -18,7 +18,7 @@
     <body>
         <?php
             //INITIALIZE GLOBAL VARIABLE
-            $active_page = "";     
+            $active_page = "";   
 
             $page = isset($_GET['page']) && $_GET['page']? $_GET['page'] : null;
             $active_page = isset($page) ? $page : "home";   
