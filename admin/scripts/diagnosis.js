@@ -9,7 +9,7 @@ var customDom = "<'row'<'col-sm-4 col-md-2 insert-diagnosa'><'col-sm-4 col-md-2 
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>";
 var columnDefs = [ {
-        "targets": 2,
+        "targets": 3,
         "data": null,
         "defaultContent": 
             "<button type='button' title='lihat solusi' style='background: transparent' class='btn btn-default btn-sm' onclick='viewSolutions(this)'><i class='fa fa-eye'></i></button>"+

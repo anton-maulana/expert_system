@@ -53,7 +53,9 @@
             echo $connect->error;
             return false;
         }
-        $conn->bind_param($types, ...$params);
+        
+        if($types && $params)
+            $conn->bind_param($types, ...$params);
         
         if(!$conn->execute()) return false;
         
