@@ -12,8 +12,8 @@
         case "diagnosis":
             include("./pages/diagnosis.php");
             break;
-        case "insert_diagnosis":
-            include("./pages/insertDiagnosis.php");
+        case "create_or_update_diagnosis":
+            include("./pages/createOrUpdateDiagnosis.php");
             break;
         default:
             include("./pages/404.php");

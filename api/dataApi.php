@@ -80,6 +80,19 @@ switch($type){
                 
         $total_row = $row["total"];
         echo json_encode(create_data_tables_response($rows, $_GET["draw"], $total_row));
+        break;
+
+    case "get_solutions":
+        $id = $_GET["id"] ?? null;
+        $query = "SELECT description FROM diagnosis WHERE id = ?";  
+        $params = array($id);
+        $rows = select($query, "d", $params, true);
+        
+        if(!$rows)
+            return;
+                
+        echo json_encode($rows);
+        return;
         
 }
 ?>
