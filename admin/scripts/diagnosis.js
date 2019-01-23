@@ -5,7 +5,7 @@ var listSymptomsSchema = [
         "data":           null,
         "defaultContent": ''
     },
-    { "data": "name", "name": "gejala", "title": "Gejala"},
+    { "data": "name", "name": "diagnosa", "title": "Diagnosa"},
     { "data": "probability", "name": "probability", "title": "Probabilitas"},
     { "data": "id", render: function(data, type, full){
             return  "<button type='button' title='lihat solusi' style='background: transparent' class='btn btn-default btn-sm' onclick='viewSolutions("+data+")'><i class='fa fa-eye'></i></button>"+
