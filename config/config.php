@@ -104,15 +104,37 @@
         return array("status" => "success");
     }
 
-    function delete($table, $id) {
+    function delete($table, $id, $multiConditions = null, $customColumName= null) {
         // Connect to the database
         global $connect;
         
-        // Prepary our query for binding
-        $conn = $connect->prepare("DELETE FROM {$table} WHERE ID = ?");
+
+        if($multiConditions){
+            $params = array();
+            $conditions = "";
+            $types = "";
+
+            foreach($multiConditions as $key => $row){
+                $params[] = $row["value"];
+                $types = $types.$row["type"];
+                $conditions = $conditions.$row["column_name"]." = ?";
+
+                if(isset($multiConditions[$key + 1]))
+                    $conditions = $conditions." AND ";
+            }
+
+            $conn = $connect->prepare("DELETE FROM {$table} WHERE {$conditions}");
+            $conn->bind_param($types, ...$params);
+        } else {        
+            // Prepary our query for binding
+            $column_name = $customColumName ?? "ID";
+            $conn = $connect->prepare("DELETE FROM {$table} WHERE {$column_name} = ?");
+
+            // Dynamically bind values
+             $conn->bind_param('d', $id);
+        }
         
-        // Dynamically bind values
-        $conn->bind_param('d', $id);
+        
 
         if(!$conn)            
             return array("status" => "failed", "error" => $connect->error);
@@ -125,7 +147,6 @@
         return array("status" => "success");
         
     }
-
 
 
     // if ( !class_exists( 'DB' ) ) {

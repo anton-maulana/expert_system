@@ -93,6 +93,25 @@ switch($type){
                 
         echo json_encode($rows);
         return;
+    case "get_symptoms":
+        $id = $_GET["id"] ?? null;
+        $query = "SELECT s.* FROM tree_symptoms_diagnosis t 
+            INNER JOIN symptoms s ON t.fk_symptoms_id = s.id
+            WHERE t.fk_diagnosis_id = ?";  
+        $params = array($id);
+        $rows = select($query, "d", $params);
         
+        if(!$rows)
+            return;
+                
+        echo json_encode($rows);
+        return;
+    case "delete_diagnosis":
+        $id = $_POST["id"];
+
+        $response = delete("diagnosis", $id);
+        delete("tree_symptoms_diagnosis", $id, null, "fk_diagnosis_id");
+        echo json_encode($response);    
+        break;
 }
 ?>

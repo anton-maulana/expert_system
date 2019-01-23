@@ -1,3 +1,13 @@
+<style>
+    td.details-control {
+        background: url('../assets/img/details_open.png') no-repeat center center;
+        cursor: pointer;
+    }
+    tr.shown td.details-control {
+        background: url('../assets/img/details_close.png') no-repeat center center;
+    }
+</style>
+
 <div class="container" style="margin-top:10px; margin-bottom:10px">
     <table id="table-list-diagnosis" class="table" style="width:100%">
     </table>
@@ -22,7 +32,7 @@
     </div>
 </div>
 
-<div id="modal-remove-symptoms" class="modal fade">
+<div id="modal-remove-diagnosa" class="modal fade">
     <div class="modal-dialog modal-confirm">
         <div class="modal-content">
             <div class="modal-header">
@@ -34,13 +44,13 @@
             </div>
             <div class="modal-body">                
                 <p></p>
-                <form id="form-remove-symptoms" action="../api/dataApi.php?type=delete_symptoms" method="POST">
+                <form id="form-remove-diagnosa" action="../api/dataApi.php?type=delete_diagnosis" method="POST">
                     <input name ="id" type="hidden" class="form-control id-gejala">
                 </form>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-info" data-dismiss="modal">Tutup</button>
-                <button type="submit" form="form-remove-symptoms" class="btn btn-danger">Hapus</button>
+                <button type="submit" form="form-remove-diagnosa" class="btn btn-danger">Hapus</button>
             </div>
         </div>
     </div>

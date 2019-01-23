@@ -20,13 +20,14 @@ $query = "SELECT * FROM symptoms";
 $symptoms = select($query);
 
 ?>
+
 <div class="container">
-    <form class="form" style="margin-top:100px" method="POST" action="core/insertDiagnosis.php">
+    <form class="form" style="margin-top:100px" method="POST" action="core/diagnosis.php?action=<?php echo $id ? "update" : "insert" ?>">
         <h2>
-            Tambah Diagnosa
+            <?php echo $id ? "Update" : "Tambah" ?> Diagnosa
         </h2>
         <?php if($id){?>
-            <input type="hidden" class="form-control" name="id" id="diagnosis-name" placeholder="Syakit Hati" value="<?php echo $id ? $diagnosis["name"] : "" ?>">
+            <input type="hidden" class="form-control" name="id" id="diagnosis-name" placeholder="Syakit Hati" value="<?php echo $id ? $diagnosis["id"] : "" ?>">
         <?php }?>
         <div class="form-group">
             <label for="diagnosis-name">Nama Diagnosa</label>
@@ -50,4 +51,4 @@ $symptoms = select($query);
     </form>              
 </div>
 <script src="../assets/js/tinymce/tinymce.min.js"></script>
-<script src="./scripts/insertDiagnosis.js"></script>
+<script src="./scripts/createOrUpdateDiagnosis.js"></script>

@@ -1,11 +1,16 @@
 var listSymptomsSchema = [
-    { "data": "id", "name": "id", "title": "Id" },
+    {
+        "className":      'details-control',
+        "orderable":      false,
+        "data":           null,
+        "defaultContent": ''
+    },
     { "data": "name", "name": "gejala", "title": "Gejala"},
     { "data": "probability", "name": "probability", "title": "Probabilitas"},
     { "data": "id", render: function(data, type, full){
             return  "<button type='button' title='lihat solusi' style='background: transparent' class='btn btn-default btn-sm' onclick='viewSolutions("+data+")'><i class='fa fa-eye'></i></button>"+
-            "<a href='?page=create_or_update_diagnosis&id="+data+"'title='edit diagnosa' style='background: transparent' class='btn btn-default btn-sm' onclick='editSymptoms("+data+")'><i class='fa fa-edit'></i></a>"+
-            "<button type='button' title='hapus diagnosa' style='background: transparent' class='btn btn-default btn-sm' onclick='removeSymptoms("+data+")'><i class='fas fa-trash-alt'></i></button>"
+            "<a href='?page=create_or_update_diagnosis&id="+data+"' title='edit diagnosa' style='background: transparent' class='btn btn-default btn-sm'><i class='fa fa-edit'></i></a>"+
+            "<button type='button' title='hapus diagnosa' style='background: transparent' class='btn btn-default btn-sm' onclick='removeDiagnosis(this)'><i class='fas fa-trash-alt'></i></button>"
         }
     },
 ];
@@ -24,6 +29,40 @@ var table = initDataTables("table-list-diagnosis", "diagnosis", listSymptomsSche
 $(".insert-diagnosa").append("<a href='?page=create_or_update_diagnosis' class='btn btn-primary btn-sm'>Tambah Diagnosa</a>");
 $(".calculate").append("<a href='?page=insert_diagnosis' class='btn btn-primary btn-sm'>Kalkulasi</a>");
 
+ // Add event listener for opening and closing details
+$('#table-list-diagnosis tbody').on('click', 'td.details-control', function () {
+    var tr = $(this).closest('tr');
+    var row = table.row( tr );
+
+    if ( row.child.isShown() ) {
+        // This row is already open - close it
+        row.child.hide();
+        tr.removeClass('shown');
+    }
+    else {
+        // Open this row
+        //row.child( format(row.data()) ).show();
+        var symptoms = getSymptomsLists(row.data()["id"]);
+        row.child(format(symptoms)).show();
+        tr.addClass('shown');
+    }
+} );
+
+$("#form-remove-diagnosa").submit(function(e) {
+    var form = $(this);
+    var url = form.attr('action');
+
+    $("#modal-remove-diagnosa")["modal"]("hide");
+    $.ajax({
+           type: "POST",
+           url: url,
+           data: form.serialize(), // serializes the form's elements.
+           success: function(data){ showToaster(JSON.parse(data), 'Hapus data berhasil.') }
+         });
+
+    e.preventDefault(); // avoid to execute the actual submit of the form.
+});
+
 function viewSolutions(id){
     $("#view-solutions")["modal"]("show");
     $.get("/api/dataApi.php?type=get_solutions&id="+id,function(responses, status){
@@ -32,100 +71,43 @@ function viewSolutions(id){
         $("#view-solutions .modal-body").html(data["description"]);
     });
 }
-// window['table'] = table;
-// $("#form-add-symptoms").submit(function(e) {
-//     var form = $(this);
-//     var url = form.attr('action');
-//     var me = this;
 
-//     $("#add-symptoms")["modal"]("hide");
-//     $.ajax({
-//            type: "POST",
-//            url: url,
-//            data: form.serialize(), // serializes the form's elements.
-//            success: function(data){ showToaster(JSON.parse(data), 'Gejala berhasil ditambahkan.') }
-//          });
+function format ( symptoms ) {
+    var tableRow = "";
+    symptoms.forEach((row, i) => {
+        tableRow = tableRow + 
+        '<tr>'+
+            '<td>Gejala ke  '+(i+1)+' </td>'+
+            '<td>'+row.name+'</td>'+
+        '</tr>';
+    });
+    return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;">'+tableRow+'</table>';
+}
 
-//     e.preventDefault(); // avoid to execute the actual submit of the form.
-// });
+function getSymptomsLists(id){
+    var data = [];
+    jQuery.ajax({
+        url: '/api/dataApi.php?type=get_symptoms&id='+id,
+        success: function (results) {
+            data = JSON.parse(results);
+        },
+        async: false
+    });
+    return data;
+}
 
+function removeDiagnosis(elements){
+    var tr = $(elements).closest('tr');
+    var row = table.row( tr );
 
-// $("#form-edit-symptoms").submit(function(e) {
-//     var form = $(this);
-//     var url = form.attr('action');
-//     var me = this;
+    var id = row.data()["id"];
+    var name = row.data()["name"];
+    var messages = "Apakah anda yakin akan menghapus <b>Diagnosa "+name+"</b> ini?, data akan permanen dihapus dari sistem."
 
-//     $("#modal-edit-symptoms")["modal"]("hide");
-//     $.ajax({
-//            type: "POST",
-//            url: url,
-//            data: form.serialize(), // serializes the form's elements.
-//            success: function(data){ showToaster(JSON.parse(data), 'Edit data berhasil.') }
-//          });
-
-//     e.preventDefault(); // avoid to execute the actual submit of the form.
-// });
-
-// $("#form-remove-symptoms").submit(function(e) {
-//     var form = $(this);
-//     var url = form.attr('action');
-//     var me = this;
-
-//     $("#modal-remove-symptoms")["modal"]("hide");
-//     $.ajax({
-//            type: "POST",
-//            url: url,
-//            data: form.serialize(), // serializes the form's elements.
-//            success: function(data){ showToaster(JSON.parse(data), 'Hapus data berhasil.') }
-//          });
-
-//     e.preventDefault(); // avoid to execute the actual submit of the form.
-// });
-
-// function showToaster(data, successMessages){
-//     if(data["response"] == "success"){
-//         $.toast({
-//             heading: 'Success',
-//             text: successMessages,
-//             showHideTransition: 'slide',
-//             icon: 'success'
-//         });
-//         table.ajax.reload();
-//     }
-//     else {
-//         $.toast({
-//             heading: 'Error',
-//             text: 'Terjadi Kesalahan '+data["error"],
-//             showHideTransition: 'slide',
-//             icon: 'error'
-//         });
-//     }
-// }
-
-// function editSymptoms(elements){
-//     var row = $(elements).closest("tr");
-//     var id = $($('td', row)[0]).html();
-//     var name = $($('td', row)[1]).html();
-//     var level = $($('td', row)[2]).html();
-
-//     $("#form-edit-symptoms .id-gejala").val(id);
-//     $("#form-edit-symptoms .nama-gejala").val(name);
-//     $("#form-edit-symptoms .level-gejala").val(level);
-//     $("#modal-edit-symptoms")["modal"]("show");
-//     return id;
-// }
-
-// function removeSymptoms(elements){
-//     var row = $(elements).closest("tr");
-//     var id = $($('td', row)[0]).html();
-//     var name = $($('td', row)[1]).html();
-//     var messages = "Apakah anda yakin akan menghapus gejala "+name+" ini?, data akan permanen dihapus dari sistem."
-
-//     $(".modal-confirm .modal-body p").html(messages);
-//     $("#form-remove-symptoms .id-gejala").val(id);
-//     $("#modal-remove-symptoms")["modal"]("show");
-//     return id;
-// }
-
+    $(".modal-confirm .modal-body p").html(messages);
+    $("#form-remove-diagnosa .id-gejala").val(id);
+    $("#modal-remove-diagnosa")["modal"]("show");
+    return id;
+}
 
 
