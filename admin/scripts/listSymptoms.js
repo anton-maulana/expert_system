@@ -1,14 +1,14 @@
 var listSymptomsSchema = [
     { "data": "id", "name": "id", "title": "Id" },
     { "data": "name", "name": "gejala", "title": "Gejala"},
-    { "data": "level", "name": "level", "title": "Level"},
+    // { "data": "level", "name": "level", "title": "Level"},
     { "data": "","title": "action"},
 ];
 var customDom = "<'row'<'col-sm-6 col-md-2 add-symptoms'><'col-sm-6 col-md-4'l><'col-sm-12 col-md-6'f>>" +
                 "<'row'<'col-sm-12'tr>>" +
                 "<'row'<'col-sm-12 col-md-5'i><'col-sm-12 col-md-7'p>>";
 var columnDefs = [ {
-        "targets": 3,
+        "targets": 2,
         "data": null,
         "defaultContent": "<button type='button' style='background: transparent' class='btn btn-default btn-sm' onclick='editSymptoms(this)'><i class='fa fa-edit'></i></button>"+
                         "<button type='button' style='background: transparent' class='btn btn-default btn-sm' onclick='removeSymptoms(this)'><i class='fas fa-trash-alt'></i></button>"
@@ -67,7 +67,7 @@ function editSymptoms(elements){
     var row = $(elements).closest("tr");
     var id = $($('td', row)[0]).html();
     var name = $($('td', row)[1]).html();
-    var level = $($('td', row)[2]).html();
+    var level = 1;
 
     $("#form-edit-symptoms .id-gejala").val(id);
     $("#form-edit-symptoms .nama-gejala").val(name);
