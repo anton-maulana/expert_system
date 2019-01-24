@@ -5,7 +5,7 @@ function create_data_tables_response($rows, $draw, $total_row){
     return array(
         "data" => $rows, 
         "draw" => $_GET["draw"]+1, 
-        "recordsFiltered" => count($rows),
+        "recordsFiltered" => $total_row,
         "recordsTotal" => $total_row
     );
 }
@@ -23,17 +23,19 @@ if($type == "list_symptoms" || $type == "diagnosis"){
 switch($type){
     case "list_symptoms":  
         //mengambil total rows untuk
-        $query = "SELECT count(*) as total FROM symptoms WHERE name LIKE ? ORDER BY ? {$order_type} LIMIT ? OFFSET ?"; 
-        $params = array($keyword, $order_name, $limit_per_page, $offset);
-        $row = select($query, "ssdd", $params, true);
+        $query = "SELECT * FROM symptoms WHERE name LIKE ? ORDER BY ? {$order_type}"; 
+        $params = array($keyword, $order_name);
+        $rows = select($query, "ss", $params);
+        $total_row = count($rows);
 
         $query = "SELECT id, name, level FROM symptoms WHERE name LIKE ? ORDER BY ? {$order_type} LIMIT ? OFFSET ?";
+        $params = array($keyword, $order_name, $limit_per_page, $offset);
         $rows = select($query, "ssdd", $params);
         
-        if(!$row || !$rows && count($rows) != 0)
+        if(!$rows && count($rows) != 0)
             return;
                 
-        $total_row = $row["total"];
+       
         echo json_encode(create_data_tables_response($rows, $_GET["draw"], $total_row));
         break;
     case "add_symptoms":
@@ -68,17 +70,18 @@ switch($type){
         break;
 
     case "diagnosis":
-        $query = "SELECT count(*) as total FROM diagnosis WHERE name LIKE ? ORDER BY ? {$order_type} LIMIT ? OFFSET ?";  
-        $params = array($keyword, $order_name, $limit_per_page, $offset);
-        $row = select($query, "ssdd", $params, true);
+        $query = "SELECT * FROM diagnosis WHERE name LIKE ? ORDER BY ? {$order_type} ";  
+        $params = array($keyword, $order_name);
+        $rows = select($query, "ss", $params);
+        $total_row = count($rows);
         
         $query = "SELECT * FROM diagnosis WHERE name LIKE ? ORDER BY ? {$order_type} LIMIT ? OFFSET ?";
+        $params = array($keyword, $order_name, $limit_per_page, $offset);
         $rows = select($query, "ssdd", $params);
         
-        if(!$row || !$rows && count($rows) != 0)
+        if(!$rows && count($rows) != 0)
             return;
                 
-        $total_row = $row["total"];
         echo json_encode(create_data_tables_response($rows, $_GET["draw"], $total_row));
         break;
 

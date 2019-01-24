@@ -127,7 +127,7 @@
             $conn->bind_param($types, ...$params);
         } else {        
             // Prepary our query for binding
-            $column_name = $customColumName ?? "ID";
+            $column_name = $customColumName ?? "id";
             $conn = $connect->prepare("DELETE FROM {$table} WHERE {$column_name} = ?");
 
             // Dynamically bind values

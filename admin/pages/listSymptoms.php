@@ -18,7 +18,7 @@
                         <label for="nama-gejjala">Nama Gejala</label>
                         <input name ="name" type="text" class="form-control" id="nama-gejala" aria-describedby="" placeholder="contoh: panas">
                     </div>
-                    <div class="form-group">
+                    <div class="form-group" style="display:none">
                         <label for="level">Level</label>
                         <input name="level" type="number" class="form-control" id="level" value="1">
                     </div>
