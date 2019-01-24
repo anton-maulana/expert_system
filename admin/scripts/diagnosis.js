@@ -6,7 +6,12 @@ var listSymptomsSchema = [
         "defaultContent": ''
     },
     { "data": "name", "name": "diagnosa", "title": "Diagnosa"},
-    { "data": "probability", "name": "probability", "title": "Probabilitas"},
+    { "data": "description", "name": "description", "title": "Solusi", render: function ( data, type, row ) {
+        return type === 'display' && data.length > 50 ?
+            data.substr( 0, 50 ) +'…' :
+            data;
+        }
+    },
     { "data": "id", render: function(data, type, full){
             return  "<button type='button' title='lihat solusi' style='background: transparent' class='btn btn-default btn-sm' onclick='viewSolutions("+data+")'><i class='fa fa-eye'></i></button>"+
             "<a href='?page=create_or_update_diagnosis&id="+data+"' title='edit diagnosa' style='background: transparent' class='btn btn-default btn-sm'><i class='fa fa-edit'></i></a>"+
@@ -27,7 +32,6 @@ var columnDefs = [ {
 
 var table = initDataTables("table-list-diagnosis", "diagnosis", listSymptomsSchema, customDom, columnDefs);
 $(".insert-diagnosa").append("<a href='?page=create_or_update_diagnosis' class='btn btn-primary btn-sm'>Tambah Diagnosa</a>");
-$(".calculate").append("<a href='?page=insert_diagnosis' class='btn btn-primary btn-sm'>Kalkulasi</a>");
 
  // Add event listener for opening and closing details
 $('#table-list-diagnosis tbody').on('click', 'td.details-control', function () {
